@@ -1,9 +1,9 @@
 import fs   from 'fs';
 import path from 'path';
+import Image from 'next/image';
 import Link  from 'next/link';
 import SiteNav    from '@/components/home/SiteNav';
 import SiteFooter from '@/components/home/SiteFooter';
-import AnimatedGallery from '@/components/gallery/AnimatedGallery';
 
 export const metadata = {
   title: 'Ethan Gunn — Tooth & Nail Studio',
@@ -23,9 +23,14 @@ function getImages(category) {
 
 function CategorySection({ n, label, images }) {
   if (!images.length) return null;
+  const cols = images.length <= 4
+    ? 'columns-2 sm:columns-3'
+    : images.length <= 12
+      ? 'columns-2 sm:columns-3 lg:columns-3'
+      : 'columns-2 sm:columns-3 lg:columns-4';
+
   return (
     <div className="border-t border-zinc-900">
-      {/* Header */}
       <div className="px-6 md:px-12 lg:px-16 pt-16 pb-10 flex items-end justify-between">
         <div>
           <p
@@ -49,11 +54,29 @@ function CategorySection({ n, label, images }) {
         </span>
       </div>
 
-      {/* Animated masonry */}
-      <AnimatedGallery images={images} label={label} height="90vh" />
-
-      {/* Bottom spacer */}
-      <div style={{ height: 80 }} />
+      <div
+        className={`${cols} px-6 md:px-12 lg:px-16 pb-20`}
+        style={{ columnGap: '6px' }}
+      >
+        {images.map((src, i) => (
+          <div
+            key={i}
+            className="break-inside-avoid overflow-hidden group"
+            style={{ marginBottom: '6px' }}
+          >
+            <Image
+              src={src}
+              alt={`${label} by Ethan Gunn`}
+              width={900}
+              height={1125}
+              style={{ width: '100%', height: 'auto', display: 'block' }}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              priority={n === 1 && i < 8}
+              className="transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:brightness-110"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -68,7 +91,6 @@ export default function EthanPage() {
       <SiteNav />
       <main style={{ background: '#0a0a0a' }}>
 
-        {/* ── Back breadcrumb ── */}
         <div className="px-6 md:px-12 lg:px-16 pt-8">
           <Link
             href="/artists"
@@ -82,7 +104,6 @@ export default function EthanPage() {
           </Link>
         </div>
 
-        {/* ── Artist hero ── */}
         <section
           className="relative w-full flex items-end overflow-hidden"
           style={{ minHeight: 'clamp(280px,38vw,460px)' }}
@@ -118,7 +139,6 @@ export default function EthanPage() {
           </div>
         </section>
 
-        {/* ── Portfolio label ── */}
         <div className="px-6 md:px-12 lg:px-16 pt-16 pb-10 border-t border-zinc-900">
           <p
             className="text-zinc-700 uppercase mb-3"
@@ -138,7 +158,6 @@ export default function EthanPage() {
         <CategorySection n={2} label="Piercings"  images={piercings} />
         <CategorySection n={3} label="Tooth Gems" images={toothGems} />
 
-        {/* ── Book CTA ── */}
         <section className="w-full py-24 border-t border-zinc-900 text-center">
           <p
             className="text-red-500/60 uppercase mb-5"
