@@ -180,34 +180,30 @@ export default function HeroSlider() {
           className="flex flex-col items-center"
           style={{ animation: 'heroFadeIn 0.55s ease' }}
         >
-          {/* Title — Oswald Medium, 54px, 20px letter-spacing (per inspector) */}
+          {/* Title */}
           <h1
-            className="text-white uppercase mb-5"
+            className="text-white uppercase mb-6"
             style={{
               fontFamily: 'var(--font-oswald), sans-serif',
-              fontWeight: 500,
-              fontSize: 'clamp(32px, 5.5vw, 54px)',
-              lineHeight: 1.01,
-              letterSpacing: '20px',
-              /* Compensate for letter-spacing trailing gap on last char */
-              marginRight: '-20px',
+              fontWeight: 700,
+              fontSize: 'clamp(64px, 11vw, 130px)',
+              lineHeight: 0.95,
+              letterSpacing: '0.12em',
+              marginRight: '-0.12em',
             }}
           >
             {slide.title}
           </h1>
 
-          {/* Subtitle — Source Sans 3 Regular, 16px, line-height 24.1px (per inspector) */}
+          {/* Subtitle */}
           <p
-            className="text-white max-w-[680px] mb-8"
+            className="text-white/80 max-w-[600px] mb-9"
             style={{
               fontFamily: 'var(--font-source-sans), sans-serif',
               fontWeight: 400,
-              fontSize: '16px',
-              lineHeight: '24.1px',
-              letterSpacing: '0px',
-              textDecoration: 'underline',
-              textDecorationColor: 'rgba(255,255,255,0.4)',
-              textUnderlineOffset: '3px',
+              fontSize: 'clamp(14px, 1.4vw, 18px)',
+              lineHeight: '1.65',
+              letterSpacing: '0.02em',
             }}
           >
             {slide.subtitle}

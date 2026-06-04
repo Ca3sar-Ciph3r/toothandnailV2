@@ -1,9 +1,9 @@
 import fs   from 'fs';
 import path from 'path';
-import Image from 'next/image';
 import Link  from 'next/link';
 import SiteNav    from '@/components/home/SiteNav';
 import SiteFooter from '@/components/home/SiteFooter';
+import AnimatedGallery from '@/components/gallery/AnimatedGallery';
 
 export const metadata = {
   title: 'Ethan Gunn — Tooth & Nail Studio',
@@ -15,9 +15,7 @@ function getImages(category) {
   try {
     return fs.readdirSync(dir)
       .filter(f => /\.(jpe?g|webp|png)$/i.test(f))
-      .map(f =>
-        `/gallery/Ethan/${encodeURIComponent(category)}/${encodeURIComponent(f)}`
-      );
+      .map(f => `/gallery/Ethan/${encodeURIComponent(category)}/${encodeURIComponent(f)}`);
   } catch {
     return [];
   }
@@ -25,15 +23,9 @@ function getImages(category) {
 
 function CategorySection({ n, label, images }) {
   if (!images.length) return null;
-  const cols = images.length <= 4
-    ? 'columns-2 sm:columns-3'
-    : images.length <= 12
-      ? 'columns-2 sm:columns-3 lg:columns-3'
-      : 'columns-2 sm:columns-3 lg:columns-4';
-
   return (
     <div className="border-t border-zinc-900">
-      {/* Category header */}
+      {/* Header */}
       <div className="px-6 md:px-12 lg:px-16 pt-16 pb-10 flex items-end justify-between">
         <div>
           <p
@@ -57,30 +49,11 @@ function CategorySection({ n, label, images }) {
         </span>
       </div>
 
-      {/* Masonry */}
-      <div
-        className={`${cols} px-6 md:px-12 lg:px-16 pb-20`}
-        style={{ columnGap: '6px' }}
-      >
-        {images.map((src, i) => (
-          <div
-            key={i}
-            className="break-inside-avoid overflow-hidden group"
-            style={{ marginBottom: '6px' }}
-          >
-            <Image
-              src={src}
-              alt={`${label} by Ethan Gunn`}
-              width={900}
-              height={1125}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              priority={n === 1 && i < 8}
-              className="transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:brightness-110"
-            />
-          </div>
-        ))}
-      </div>
+      {/* Animated masonry */}
+      <AnimatedGallery images={images} label={label} height="90vh" />
+
+      {/* Bottom spacer */}
+      <div style={{ height: 80 }} />
     </div>
   );
 }
@@ -114,10 +87,7 @@ export default function EthanPage() {
           className="relative w-full flex items-end overflow-hidden"
           style={{ minHeight: 'clamp(280px,38vw,460px)' }}
         >
-          <div
-            className="absolute inset-0 pointer-events-none select-none flex items-center justify-center overflow-hidden"
-            aria-hidden="true"
-          >
+          <div className="absolute inset-0 pointer-events-none select-none flex items-center justify-center overflow-hidden" aria-hidden="true">
             <span
               className="text-white/[0.025] leading-none uppercase"
               style={{ fontFamily: 'var(--font-oswald),sans-serif', fontWeight: 700, fontSize: 'clamp(80px,16vw,200px)', letterSpacing: '0.08em' }}
@@ -125,10 +95,7 @@ export default function EthanPage() {
               EG
             </span>
           </div>
-          <div
-            className="absolute inset-0"
-            style={{ background: 'radial-gradient(ellipse 50% 60% at 60% 50%,rgba(180,20,20,0.12) 0%,transparent 70%)' }}
-          />
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 50% 60% at 60% 50%,rgba(180,20,20,0.12) 0%,transparent 70%)' }} />
           <div className="relative z-10 w-full px-6 md:px-12 lg:px-16 pb-14 pt-10">
             <p
               className="text-red-500/60 uppercase mb-3"
@@ -167,7 +134,6 @@ export default function EthanPage() {
           </h2>
         </div>
 
-        {/* ── Gallery sections ── */}
         <CategorySection n={1} label="Tattoos"    images={tattoos}   />
         <CategorySection n={2} label="Piercings"  images={piercings} />
         <CategorySection n={3} label="Tooth Gems" images={toothGems} />
