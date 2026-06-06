@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
 
 const NAV_LINKS = [
   { label: 'Tattoos',   href: '/tattoos'   },
@@ -33,6 +34,7 @@ function SearchIcon() {
 export default function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { itemCount, setOpen: openCart } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -77,13 +79,27 @@ export default function SiteNav() {
         {/* ── Right actions ── */}
         <div className="ml-auto flex items-center gap-5 z-10">
           {/* Shop Online */}
-          <a
-            href="#shop"
+          <Link
+            href="/shop"
             className="hidden md:flex items-center gap-2 text-[11px] font-bold text-white tracking-[0.18em] uppercase hover:text-red-400 transition-colors"
           >
             <CartIcon />
             <span>Shop Online</span>
-          </a>
+          </Link>
+
+          {/* Cart button */}
+          <button
+            onClick={() => openCart(true)}
+            className="hidden md:flex items-center justify-center relative text-white/60 hover:text-white transition-colors"
+            aria-label="Open cart"
+          >
+            <CartIcon />
+            {itemCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-600 text-white text-[9px] font-bold flex items-center justify-center rounded-full">
+                {itemCount > 9 ? '9+' : itemCount}
+              </span>
+            )}
+          </button>
 
           {/* Search */}
           <button
@@ -130,12 +146,13 @@ export default function SiteNav() {
               </li>
             ))}
           </ul>
-          <a
-            href="#shop"
+          <Link
+            href="/shop"
+            onClick={() => setMenuOpen(false)}
             className="flex items-center gap-2 text-[11px] font-bold text-white/60 tracking-[0.15em] uppercase hover:text-white transition-colors"
           >
             <CartIcon /> Shop Online
-          </a>
+          </Link>
         </div>
       )}
     </nav>

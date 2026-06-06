@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono, Cormorant_Garamond, DM_Sans, Oswald, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
+import CartDrawer from "@/components/shop/CartDrawer";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -51,7 +53,12 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} ${dmSans.variable} ${oswald.variable} ${sourceSans3.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#020202] text-zinc-50" suppressHydrationWarning>{children}</body>
+      <body className="min-h-full flex flex-col bg-[#020202] text-zinc-50" suppressHydrationWarning>
+        <CartProvider>
+          {children}
+          <CartDrawer />
+        </CartProvider>
+      </body>
     </html>
   );
 }
